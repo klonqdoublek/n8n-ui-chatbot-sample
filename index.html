@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chatbot UI — Responsive</title>
+  <style>
+    :root{
+      /* Pink theme variables */
+      --bg:#1a0414;            /* deep plum background */
+      --panel:#22061a;         /* panel background */
+      --muted:#f3c7de;         /* muted / secondary text (soft pink) */
+      --accent:#ff4da6;        /* primary accent (bright pink) */
+      --user:#ff77c2;          /* user bubble (lighter pink) */
+      --bot:#2b0a17;           /* bot bubble / darker panel */
+      --glass: rgba(255,255,255,0.03);
+      --max-width:900px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      padding:24px;
+      background:linear-gradient(180deg,#120417 0%, #1a0414 50%);
+      color:#ffeef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;align-items:center;justify-content:center;
+      min-height:100vh;
+    }
+
+    .app{
+      width:100%;
+      max-width:var(--max-width);
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px;
+      box-shadow:0 10px 30px rgba(2,6,23,0.6);
+      overflow:hidden;
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      min-height:560px;
+    }
+
+    /* Mobile first: collapse to single column */
+    @media (max-width:880px){
+      .app{grid-template-columns:1fr; height:100vh; border-radius:0}
+      body{padding:0}
+    }
+
+    /* Sidebar */
+    .sidebar{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:18px;
+      border-right:1px solid rgba(255,255,255,0.03);
+      display:flex;flex-direction:column;gap:12px;
+      min-width:260px;
+    }
+    .brand{display:flex;gap:12px;align-items:center}
+    .brand .logo{
+      width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#ff77c2);display:flex;align-items:center;justify-content:center;font-weight:700;color:#310514
+    }
+    .brand h1{font-size:16px;margin:0}
+    .session-row{display:flex;gap:8px;align-items:center}
+    .session-row input{flex:1;background:transparent;border:1px solid rgba(255,255,255,0.03);padding:8px;border-radius:8px;color:inherit}
+    .session-row button{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;cursor:pointer}
+
+    .preset-list{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+    .preset{background:var(--glass);padding:10px;border-radius:10px;font-size:14px;cursor:pointer;border:1px solid rgba(255,255,255,0.02)}
+    .preset:hover{transform:translateY(-2px);transition:transform .12s}
+
+    .info{margin-top:auto;font-size:13px;color:var(--muted)}
+
+    /* Chat area */
+    .chat-area{display:flex;flex-direction:column;height:100%;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));}
+    .header{padding:16px;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:12px}
+    .header .title{font-weight:600}
+    .messages{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:12px;background-image:linear-gradient(transparent 0, rgba(255,255,255,0.01) 1px);backdrop-filter: blur(6px)}
+
+    .msg{max-width:78%;padding:12px 14px;border-radius:12px;line-height:1.45;font-size:15px}
+    .msg .meta{font-size:12px;color:var(--muted);margin-bottom:6px}
+  .msg.user{align-self:flex-end;background:linear-gradient(90deg,var(--user), #ff4da6);color:#3a0014;border-bottom-right-radius:6px}
+  .msg.bot{align-self:flex-start;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));color:var(--muted);border:1px solid rgba(255,255,255,0.03)}
+
+    .typing{display:inline-block;height:14px}
+    .dots span{display:inline-block;width:6px;height:6px;margin-right:4px;border-radius:50%;background:var(--muted);opacity:.4;animation:blink 1s infinite}
+    .dots span:nth-child(2){animation-delay:.12s}
+    .dots span:nth-child(3){animation-delay:.24s}
+    @keyframes blink{0%{opacity:.2}50%{opacity:1}100%{opacity:.2}}
+
+    .composer{display:flex;padding:12px;border-top:1px solid rgba(255,255,255,0.03);gap:8px;align-items:center}
+    .composer textarea{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);resize:none;background:transparent;color:inherit;min-height:48px}
+  .composer .send{background:var(--accent);border:none;color:#fff;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer}
+    .composer .send[disabled]{opacity:.5;cursor:not-allowed}
+
+    .meta-row{display:flex;gap:10px;align-items:center}
+    .small{font-size:12px;color:var(--muted)}
+
+    /* accessibility focus */
+  button:focus, .preset:focus, input:focus, textarea:focus{outline:3px solid rgba(255,77,166,0.18);outline-offset:2px}
+
+    /* larger screens */
+    @media (min-width:1100px){
+      .app{height:760px}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="Chatbot interface">
+    <aside class="sidebar" aria-label="controls">
+      <div class="brand">
+        <div class="logo">CB</div>
+        <div>
+          <h1>Chatbot UI</h1>
+          <div class="small">Responsive front-end using provided API</div>
+        </div>
+      </div>
+
+      <div>
+        <label for="session" class="small">Session ID</label>
+        <div class="session-row">
+          <input id="session" type="text" value="session-001" aria-label="session id" />
+          <button id="clear">Clear</button>
+        </div>
+      </div>
+
+      <div>
+        <label class="small">Presets</label>
+        <div class="preset-list" role="list">
+          <div class="preset" tabindex="0" data-msg="ขอข้อมูลผู้ใช้งาน Karn">ถามข้อมูลผู้ใช้งาน Karn</div>
+          <div class="preset" tabindex="0" data-msg="สรุปการประชุมเมื่อวาน">สรุปการประชุม</div>
+          <div class="preset" tabindex="0" data-msg="ช่วยเขียนอีเมลติดต่อทีมขายเป็นภาษาอังกฤษ">เขียนอีเมล</div>
+        </div>
+      </div>
+
+      <div class="info small">API endpoint:<br><code style="font-size:12px;color:var(--muted)">https://n8n.srv1114184.hstgr.cloud/webhook/chatbot-api-ui</code></div>
+    </aside>
+
+    <section class="chat-area" aria-live="polite">
+      <header class="header">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:44px;height:44px;border-radius:10px;background:var(--glass);display:flex;align-items:center;justify-content:center">🤖</div>
+          <div>
+            <div class="title">Chatbot — Live</div>
+            <div class="small">Connected to n8n webhook</div>
+          </div>
+        </div>
+      </header>
+
+      <div class="messages" id="messages" role="log" aria-live="polite" aria-relevant="additions text">
+        <!-- messages appear here -->
+      </div>
+
+      <form class="composer" id="composer" aria-label="Send message to chatbot">
+        <textarea id="input" rows="1" placeholder="พิมพ์ข้อความ หรือกดตัวอย่าง (Presets)" aria-label="ข้อความ"></textarea>
+        <button type="submit" class="send" id="send">ส่ง</button>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    // Configuration
+    const API_URL = 'https://n8n.srv1114184.hstgr.cloud/webhook/chatbot-api-ui';
+
+    // DOM refs
+    const messagesEl = document.getElementById('messages');
+    const inputEl = document.getElementById('input');
+    const composer = document.getElementById('composer');
+    const sessionInput = document.getElementById('session');
+    const clearBtn = document.getElementById('clear');
+    const presets = document.querySelectorAll('.preset');
+
+    // Utilities
+    function appendMessage({who='bot', text='', meta=''}){
+      const el = document.createElement('div');
+      el.className = 'msg ' + (who==='user' ? 'user':'bot');
+      if(meta) el.innerHTML = `<div class="meta">${meta}</div>` + `<div class="content">${escapeHtml(text).replace(/\n/g,'<br/>')}</div>`;
+      else el.innerHTML = `<div class="content">${escapeHtml(text).replace(/\n/g,'<br/>')}</div>`;
+      messagesEl.appendChild(el);
+      messagesEl.scrollTop = messagesEl.scrollHeight - messagesEl.clientHeight + 100;
+    }
+
+    function escapeHtml(text){
+      const t = document.createTextNode(text || '');
+      const div = document.createElement('div');
+      div.appendChild(t);
+      return div.innerHTML;
+    }
+
+    function showTyping(){
+      const el = document.createElement('div');
+      el.className = 'msg bot typing';
+      el.id = 'typing';
+      el.innerHTML = '<div class="dots"><span></span><span></span><span></span></div>';
+      messagesEl.appendChild(el);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+    function hideTyping(){
+      const t = document.getElementById('typing');
+      if(t) t.remove();
+    }
+
+    async function sendMessage(raw){
+      const sessionId = (sessionInput.value || 'session-001').trim();
+      // show user's message first
+      appendMessage({who:'user', text: raw, meta: `You · ${new Date().toLocaleTimeString()}`});
+      inputEl.value = '';
+      inputEl.focus();
+
+      // show typing indicator
+      showTyping();
+
+      try{
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: raw, sessionId })
+        });
+
+        hideTyping();
+
+        if(!res.ok){
+          appendMessage({who:'bot', text:`เกิดข้อผิดพลาด: HTTP ${res.status}`});
+          return;
+        }
+
+        // try to parse JSON
+        const json = await res.json();
+
+        // Response shape in your example: { "output": "text..." }
+        // We handle several common possibilities gracefully
+        let botText = '';
+        if(typeof json.output === 'string') botText = json.output;
+        else if(typeof json.output === 'object' && json.output !== null){
+          // flatten object to readable string
+          botText = JSON.stringify(json.output, null, 2);
+        } else if(typeof json.message === 'string') botText = json.message;
+        else botText = JSON.stringify(json);
+
+        appendMessage({who:'bot', text: botText, meta: `Bot · ${new Date().toLocaleTimeString()}`});
+
+      }catch(err){
+        hideTyping();
+        console.error(err);
+        appendMessage({who:'bot', text: 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ — กรุณาตรวจสอบการเชื่อมต่อหรือ URL ของ API'});
+      }
+    }
+
+    // handle submit
+    composer.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const text = inputEl.value.trim();
+      if(!text) return;
+      sendMessage(text);
+    });
+
+    // Enter to send, Shift+Enter newline
+    inputEl.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' && !e.shiftKey){
+        e.preventDefault();
+        composer.requestSubmit();
+      }
+    });
+
+    // preset clicks
+    presets.forEach(p=>p.addEventListener('click', ()=>{
+      const msg = p.dataset.msg || p.textContent.trim();
+      inputEl.value = msg;
+      inputEl.focus();
+    }));
+
+    presets.forEach(p=>p.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        p.click();
+      }
+    }));
+
+    // Clear session
+    clearBtn.addEventListener('click', ()=>{ sessionInput.value = ''; sessionInput.focus(); });
+
+    // seed conversation example
+    appendMessage({who:'bot', text:'สวัสดี! ฉันเชื่อมต่อกับ webhook แล้ว คุณสามารถพิมพ์คำถามได้เลย เช่น "ขอข้อมูลผู้ใช้งาน Karn"', meta:`Bot · ${new Date().toLocaleTimeString()}`});
+
+    // Responsive autosize for textarea
+    function autoSize(){
+      inputEl.style.height = 'auto';
+      inputEl.style.height = (inputEl.scrollHeight) + 'px';
+    }
+    inputEl.addEventListener('input', autoSize);
+    autoSize();
+
+    // small utility: allow programmatic call (for integration/testing)
+    window.__chatbot = { sendMessage };
+
+  </script>
+</body>
+</html>
