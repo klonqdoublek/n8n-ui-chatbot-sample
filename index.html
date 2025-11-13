@@ -10,10 +10,10 @@
   <div class="app" role="application" aria-label="Chatbot interface">
     <aside class="sidebar" aria-label="controls">
       <div class="brand">
-        <div class="logo">CB</div>
+        <img src="../Nong_C-MADONG.png" alt="C-Madong logo" class="logo" style="width:44px;height:44px;border-radius:10px;object-fit:cover" />
         <div>
-          <h1>Chatbot UI</h1>
-          <div class="small">Responsive front-end using provided API</div>
+          <h1>C-Madong Agentic Chatbot</h1>
+          <div class="small">น้องซีมะโด่งยินดีช่วยเหลือนิสิตหอพักทุกคน!</div>
         </div>
       </div>
 
@@ -26,11 +26,11 @@
       </div>
 
       <div>
-        <label class="small">Presets</label>
+        <label class="small">คำถามที่พบบ่อย</label>
         <div class="preset-list" role="list">
-          <div class="preset" tabindex="0" data-msg="ขอข้อมูลผู้ใช้งาน Karn">ถามข้อมูลผู้ใช้งาน Karn</div>
-          <div class="preset" tabindex="0" data-msg="สรุปการประชุมเมื่อวาน">สรุปการประชุม</div>
-          <div class="preset" tabindex="0" data-msg="ช่วยเขียนอีเมลติดต่อทีมขายเป็นภาษาอังกฤษ">เขียนอีเมล</div>
+          <div class="preset" tabindex="0" data-msg="ข้อมูลส่วนตัวของฉัน">👩🏻‍💻 ข้อมูลส่วนตัวของฉัน</div>
+          <div class="preset" tabindex="0" data-msg="เวลาทำการหอพัก">⏱️ เวลาทำการหอพัก</div>
+          <div class="preset" tabindex="0" data-msg="ส่งคำขอแจ้งซ่อม">🛠️ ส่งคำขอแจ้งซ่อม</div>
         </div>
       </div>
 
@@ -40,9 +40,9 @@
     <section class="chat-area" aria-live="polite">
       <header class="header">
         <div style="display:flex;align-items:center;gap:10px">
-          <div style="width:44px;height:44px;border-radius:10px;background:var(--glass);display:flex;align-items:center;justify-content:center">🤖</div>
+          <div style="width:44px;height:44px;border-radius:10px;background:var(--glass);display:flex;align-items:center;justify-content:center">💬</div>
           <div>
-            <div class="title">Chatbot — Live</div>
+            <div class="title">🟢 C-MADONG — Live</div>
             <div class="small">Connected to n8n webhook</div>
           </div>
         </div>
@@ -53,7 +53,7 @@
       </div>
 
       <form class="composer" id="composer" aria-label="Send message to chatbot">
-        <textarea id="input" rows="1" placeholder="พิมพ์ข้อความ หรือกดตัวอย่าง (Presets)" aria-label="ข้อความ"></textarea>
+        <textarea id="input" rows="1" placeholder="พิมพ์ข้อความ หรือกดตัวอย่าง (คำถามที่พบบ่อย)" aria-label="ข้อความ"></textarea>
         <button type="submit" class="send" id="send">ส่ง</button>
       </form>
     </section>
@@ -181,7 +181,7 @@
     clearBtn.addEventListener('click', ()=>{ sessionInput.value = ''; sessionInput.focus(); });
 
     // seed conversation example
-    appendMessage({who:'bot', text:'สวัสดี! ฉันเชื่อมต่อกับ webhook แล้ว คุณสามารถพิมพ์คำถามได้เลย เช่น "ขอข้อมูลผู้ใช้งาน Karn"', meta:`Bot · ${new Date().toLocaleTimeString()}`});
+    appendMessage({who:'bot', text:'สวัสดี! น้องซีมะโด่งมาแล้วค่ะ! ยินดีช่วยเหลือน้องนิสิตทุกคน สามารถพิมพ์คำถามได้เลย เช่น "ข้อมูลส่วนตัวของฉัน"', meta:`Bot · ${new Date().toLocaleTimeString()}`});
 
     // Responsive autosize for textarea
     function autoSize(){
