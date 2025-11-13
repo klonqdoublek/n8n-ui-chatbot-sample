@@ -10,7 +10,7 @@
   <div class="app" role="application" aria-label="Chatbot interface">
     <aside class="sidebar" aria-label="controls">
       <div class="brand">
-        <img src="../Nong_C-MADONG.png" alt="C-Madong logo" class="logo" style="width:44px;height:44px;border-radius:10px;object-fit:cover" />
+        <img src="/Users/klonqdoublek/klonqdevblek/n8n-front-end-test/public/images/Nong_C-MADONG.png" alt="C-Madong logo" class="logo" style="width:44px;height:44px;border-radius:10px;object-fit:cover" />
         <div>
           <h1>C-Madong Agentic Chatbot</h1>
           <div class="small">น้องซีมะโด่งยินดีช่วยเหลือนิสิตหอพักทุกคน!</div>
@@ -181,7 +181,7 @@
     clearBtn.addEventListener('click', ()=>{ sessionInput.value = ''; sessionInput.focus(); });
 
     // seed conversation example
-    appendMessage({who:'bot', text:'สวัสดี! น้องซีมะโด่งมาแล้วค่ะ! ยินดีช่วยเหลือน้องนิสิตทุกคน สามารถพิมพ์คำถามได้เลย เช่น "ข้อมูลส่วนตัวของฉัน"', meta:`Bot · ${new Date().toLocaleTimeString()}`});
+    appendMessage({who:'Bot', text:'สวัสดี! น้องซีมะโด่งมาแล้วค่ะ! ยินดีช่วยเหลือน้องนิสิตทุกคน สามารถพิมพ์คำถามได้เลยค่ะ เช่น "ข้อมูลส่วนตัวของฉัน"', meta:`👧🏻 น้องซีมะโด่ง · ${new Date().toLocaleTimeString()}`});
 
     // Responsive autosize for textarea
     function autoSize(){
