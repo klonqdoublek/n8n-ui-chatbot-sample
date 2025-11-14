@@ -78,7 +78,8 @@
       if(meta) el.innerHTML = `<div class="meta">${meta}</div>` + `<div class="content">${escapeHtml(text).replace(/\n/g,'<br/>')}</div>`;
       else el.innerHTML = `<div class="content">${escapeHtml(text).replace(/\n/g,'<br/>')}</div>`;
       messagesEl.appendChild(el);
-      messagesEl.scrollTop = messagesEl.scrollHeight - messagesEl.clientHeight + 100;
+      // scroll to true bottom; previous calculation could overshoot and cause weird clipping
+      messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
     function escapeHtml(text){

@@ -29,6 +29,8 @@ body{
 .app{
   width:100%;
   max-width:var(--max-width);
+  /* keep the app from growing beyond the viewport so internal areas can scroll */
+  max-height: calc(100vh - 48px);
   background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
   border-radius:16px;
   box-shadow:0 10px 30px rgba(2,6,23,0.6);
@@ -75,14 +77,19 @@ body{
 
 .info{margin-top:auto;font-size:13px;color:var(--muted)}
 
-/* Chat area */
-.chat-area{display:flex;flex-direction:column;height:100%;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));}
+.chat-area{display:flex;flex-direction:column;height:100%;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  /* allow children (like .messages) to shrink properly for scrolling in a flex column */
+  min-height:0;
+}
 
 .header{padding:16px;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:12px}
 
 .header .title{font-weight:600}
 
-.messages{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:12px;background-image:linear-gradient(transparent 0, rgba(255,255,255,0.01) 1px);backdrop-filter: blur(6px)}
+.messages{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:12px;background-image:linear-gradient(transparent 0, rgba(255,255,255,0.01) 1px);backdrop-filter: blur(6px);
+  /* allow internal scrolling inside a flex child */
+  min-height:0;
+}
 
 .msg{max-width:78%;padding:12px 14px;border-radius:12px;line-height:1.45;font-size:15px}
 
