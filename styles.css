@@ -26,6 +26,12 @@ body{
   min-height:100vh;
 }
 
+button{
+  color:white;
+  font:inherit;
+  opacity: 0.9;
+}
+
 .app{
   width:100%;
   max-width:var(--max-width);

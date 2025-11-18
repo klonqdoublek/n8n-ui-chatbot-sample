@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Chatbot UI — Responsive</title>
+  <title>C-MADONG Chatbot</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -60,6 +60,11 @@
   </div>
 
   <script>
+    //line-liff add
+    import liff from "@line/liff";
+    liff.init({
+    liffId: "2008522886-3zgmaRmJ", // Use own liffId
+    });
     // Configuration
     const API_URL = 'https://n8n.srv1114184.hstgr.cloud/webhook/chatbot-api-ui';
 
